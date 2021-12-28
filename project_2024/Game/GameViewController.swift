@@ -21,7 +21,7 @@ class GameViewController: UIViewController {
     /// HOME Button
     /// - Parameter sender: return MenuView
     @IBAction func homeEvent(_ sender: Any) {
-        guard let homeView = self.storyboard?.instantiateViewController(identifier: "Home") else { return }
+        guard (self.storyboard?.instantiateViewController(identifier: "Home")) != nil else { return }
         self.navigationController?.popViewController(animated: true)
     }
     @IBAction func undoEvent(_ sender: Any) {

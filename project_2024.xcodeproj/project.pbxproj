@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0249F2FF277B57CF00295482 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0249F2FE277B57CF00295482 /* SettingViewController.swift */; };
 		02800BDF26B1741D00CB3E5B /* GetRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02800BDE26B1741D00CB3E5B /* GetRequest.swift */; };
 		02800BE126B1742D00CB3E5B /* PutRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02800BE026B1742D00CB3E5B /* PutRequest.swift */; };
 		02800BE326B1743700CB3E5B /* PostRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02800BE226B1743700CB3E5B /* PostRequest.swift */; };
@@ -33,6 +34,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0249F2FE277B57CF00295482 /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		02800BDE26B1741D00CB3E5B /* GetRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetRequest.swift; sourceTree = "<group>"; };
 		02800BE026B1742D00CB3E5B /* PutRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PutRequest.swift; sourceTree = "<group>"; };
 		02800BE226B1743700CB3E5B /* PostRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostRequest.swift; sourceTree = "<group>"; };
@@ -98,6 +100,7 @@
 		029EED8026AC02CC0030ABE5 /* Setting */ = {
 			isa = PBXGroup;
 			children = (
+				0249F2FE277B57CF00295482 /* SettingViewController.swift */,
 			);
 			path = Setting;
 			sourceTree = "<group>";
@@ -187,10 +190,10 @@
 			isa = PBXGroup;
 			children = (
 				029EED8C26AC07400030ABE5 /* Extensions */,
-				029EED8026AC02CC0030ABE5 /* Setting */,
 				029EED7F26AC02BD0030ABE5 /* Network */,
 				029EED7A26998B2B0030ABE5 /* Score */,
 				3240AF5526551F39007C5F06 /* Game */,
+				029EED8026AC02CC0030ABE5 /* Setting */,
 				8721AD222650E80F0029EFEA /* AppDelegate.swift */,
 				8721AD242650E80F0029EFEA /* SceneDelegate.swift */,
 				8721AD282650E80F0029EFEA /* Main.storyboard */,
@@ -322,6 +325,7 @@
 				3240AF5426551802007C5F06 /* MenuViewController.swift in Sources */,
 				3240AF59265524B9007C5F06 /* GameGridView.swift in Sources */,
 				8721AD252650E80F0029EFEA /* SceneDelegate.swift in Sources */,
+				0249F2FF277B57CF00295482 /* SettingViewController.swift in Sources */,
 				029EED8E26AC07500030ABE5 /* DataExtensions.swift in Sources */,
 				029EED8B26AC04E30030ABE5 /* GameEndPoint.swift in Sources */,
 				029EED7E26ABE8B50030ABE5 /* ScoreViewModel.swift in Sources */,

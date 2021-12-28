@@ -19,6 +19,8 @@ struct NumberLabelComponent {
 
 // MARK: - Game Grid View
 
+
+///
 class GameGridView: UIView {
     let lineWidth: CGFloat = 2
     let division: Int = 5
@@ -51,7 +53,10 @@ class GameGridView: UIView {
     }
     
     func reSet() {
-        
+        for comp in numbersLabels {
+            comp.label.removeFromSuperview()
+        }
+        numbersLabels = []
     }
     
     func createNewNumber(at row: Int, column: Int, number: Int) {

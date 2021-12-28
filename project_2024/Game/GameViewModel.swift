@@ -13,6 +13,7 @@ enum ScrollDirection {
     case down
 }
 
+/// <#Description#>
 struct NumberPos {
     var col: Int
     var row: Int
@@ -28,6 +29,8 @@ struct NumberPos {
     }
 }
 
+
+/// 
 enum NumberState {
     case new, stay, move, remove, merged
 }
@@ -67,6 +70,7 @@ class GameViewModel {
 //        }
 //    }
     
+    /// Undo
     func undo() {
         self.numbers = undoNumbers.map { $0.map { $0} }
     }
@@ -76,7 +80,7 @@ class GameViewModel {
     }
     
     /// createRandomNumber
-    /// - Returns: <#description#>
+    /// - Returns: nubers[Row][Col]
     func createRandomNum() -> NumberComponent? {
         if isFull { return nil }
         

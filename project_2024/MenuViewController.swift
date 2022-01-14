@@ -19,6 +19,12 @@ class MenuViewController: UIViewController {
         setButtonLayer()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+        navigationController?.navigationBar.isHidden = true
+    }
+    
     private func setButtonLayer() {
         startButton.layer.borderWidth = 1
         startButton.layer.borderColor = UIColor.black.cgColor

@@ -6,5 +6,5 @@
 //
 
 class NetworkEnviroment {
-    static let basePath = "http://192.168.1.197:3000"
+    static let basePath = ""
 }

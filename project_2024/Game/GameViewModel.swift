@@ -6,14 +6,10 @@
 //
 import Foundation
 
-enum ScrollDirection {
-    case left
-    case right
-    case up
-    case down
+enum Direction {
+    case left, right, up, down
 }
 
-/// <#Description#>
 struct NumberPos {
     var col: Int
     var row: Int
@@ -29,11 +25,14 @@ struct NumberPos {
     }
 }
 
-
-/// 
 enum NumberState {
-    case new, stay, move, remove, merged
+    case new
+    case stay
+    case move
+    case remove
+    case merged
 }
+
 
 struct NumberComponent {
     var value: Int
@@ -42,65 +41,70 @@ struct NumberComponent {
     var state: NumberState
     
     func printForm() -> String {
-        return "\(value), \(curPos.printForm()), \(nextPos?.printForm() ?? "nil"), \(state))"
+        return "\(value), \(curPos.printForm()), \(nextPos?.printForm() ?? "nil"), \(state)"
     }
 }
 
 class GameViewModel {
-    private let MAX_COLUMN: Int = 5
-    private let MAX_ROW:Int = 5
+    private let MAX_COLUMN: Int = DIVISION
+    private let MAX_ROW: Int = DIVISION
+    private var undoTarget: [[NumberComponent?]] = []
     
-    var numbers: [[NumberComponent?]]
-    var undoNumbers: [[NumberComponent?]] = []
+    var score: Int = 0 {
+        didSet {
+            if score > CONFIG.shared.bestScore {
+                CONFIG.shared.bestScore = score
+            }
+        }
+    }
+    
+    var numbers: [[NumberComponent?]] = []
+    // TODO: -
+    // 1. gameover condition
+    // 2. current score
+    // 3. best score
+    // gameover -> add to rank
     var isFull: Bool {
         return !numbers.contains(where: { $0.contains(where: { $0 == nil })})
     }
-    
     init() {
+        reset()
+    }
+    
+    func reset() {
         numbers = Array(repeating: Array(repeating: nil, count: MAX_COLUMN), count: MAX_ROW)
-    }
-//    var isGameOver: Bool {
-//        get {
-//            for numbers in numbers {
-//                if numbers.contains(nil) {
-//                    return false
-//                }
-//            }
-//            return true
-//        }
-//    }
-    
-    /// Undo
-    func undo() {
-        self.numbers = undoNumbers.map { $0.map { $0} }
+        undoTarget = []
+        score = 0
     }
     
-    func reSet() {
-        
+    func undo() -> Bool {
+        if undoTarget.count == 0 { return false }
+        numbers = undoTarget.map { $0.map { $0 } }
+        undoTarget = []
+        return true
     }
     
-    /// createRandomNumber
-    /// - Returns: nubers[Row][Col]
-    func createRandomNum() -> NumberComponent? {
+    func createNew() -> NumberComponent? {
         if isFull { return nil }
         
-        let randRow = Int.random(in: 0 ..< MAX_ROW)
-        let randCol = Int.random(in: 0 ..< MAX_COLUMN)
-        if numbers[randRow][randCol] != nil {
-            return createRandomNum()  //recursive function
+        let rand_col = Int.random(in: 0 ..< MAX_ROW)
+        let rand_row = Int.random(in: 0 ..< MAX_COLUMN)
+        if numbers[rand_row][rand_col] != nil {
+            return createNew()
         }
         else {
-            numbers[randRow][randCol] = NumberComponent(
-                value: 2,
-                curPos: NumberPos(col: randCol, row: randRow),
-                state: .new)
-            
-            return numbers[randRow][randCol]
+            numbers[rand_row][rand_col] =
+                NumberComponent(
+                    value: 2,
+                    curPos: NumberPos(col: rand_col, row: rand_row),
+                    state: .new)
+            return numbers[rand_row][rand_col]
         }
+        
     }
     
-    func setMove(direction: ScrollDirection) -> Bool {
-        switch direction {
+    func setMove(dir: Direction) -> Bool {
+        switch dir {
         case .left: return setMove()
         case .right: return setMove(reversed: true)
         case .up: return setMove(transposed: true)
@@ -108,44 +112,44 @@ class GameViewModel {
         }
     }
     
-    private func setMove(reversed: Bool = false, transposed: Bool = false) -> Bool {
-        let tempUndo = numbers.map { $0.map { $0} }
-        
-        var hasChanged: Bool = false
+    private func isNextAvailable() -> Bool {
+        return true
+    }
     
-        let temp = transposed ? matrixTranspose(numbers) : numbers.map { $0.map { $0 } }
+    private func setMove(reversed: Bool = false, transposed: Bool = false) -> Bool {
+        var hasChanged: Bool = false
+        let origin = numbers.map { $0.map { $0 }}
+        let temp = transposed ? matrixTranspose(numbers) : numbers.map { $0.map { $0} }
         for row in 0 ..< temp.count {
             var tempRow: [NumberComponent] = temp[row].compactMap { $0 }
             if reversed { tempRow = tempRow.reversed() }
-            
+        
             mergeIfNeeded(nums: &tempRow)
-            
             for col in 0 ..< tempRow.count {
                 let curPos = tempRow[col].curPos
                 guard let nextPos = tempRow[col].nextPos else {
-                    print("Someting Wrong")
+                    print("something wrong.")
                     return false
                 }
+        
                 let next_col = reversed ? MAX_COLUMN - 1 - nextPos.col : nextPos.col
                 let next_row = transposed ? MAX_ROW - 1 - nextPos.row : nextPos.row
                 
                 let next = transposed ? NumberPos(col: curPos.col, row: next_col) : NumberPos(col: next_col, row: next_row)
                 numbers[curPos.row][curPos.col]?.nextPos = next
-                
                 if tempRow[col].state != .stay {
                     numbers[curPos.row][curPos.col]?.state = tempRow[col].state
-                } else {
+                }
+                else  {
                     numbers[curPos.row][curPos.col]?.state = next == curPos ? .stay : .move
                 }
-                
-                if curPos != next {
-                    hasChanged = true
-                }
+                // if value changed
+                if curPos != next {  hasChanged = true }
             }
         }
         
         if hasChanged {
-            undoNumbers = tempUndo
+            undoTarget = origin
         }
         
         return hasChanged
@@ -157,26 +161,29 @@ class GameViewModel {
         for row in 0 ..< numbers.count {
             for col in 0 ..< numbers.count {
                 guard let num = numbers[row][col] else { continue }
-                
                 switch num.state {
-                case .new, .stay:
-                    result[row][col] = NumberComponent(value: num.value, curPos: num.curPos, nextPos: nil, state: .stay)
+                case .new, .stay: result[row][col] = NumberComponent(value: num.value, curPos: num.curPos, nextPos: nil, state: .stay)
                 case .move:
                     guard let nextPos = num.nextPos else {
-                        print("Wrong")
+                        print("something wrong 2.")
                         return }
                     result[nextPos.row][nextPos.col] = NumberComponent(value: num.value, curPos: nextPos, nextPos: nil, state: .stay)
-                case .remove:
-                    continue
                 case .merged:
-                guard let nextPos = num.nextPos else {
-                    print("Wrong")
-                    return }
+                    guard let nextPos = num.nextPos else {
+                        print("something wrong 2.")
+                        return }
                     result[nextPos.row][nextPos.col] = NumberComponent(value: num.value * 2, curPos: nextPos, nextPos: nil, state: .stay)
+                case .remove: continue
                 }
             }
         }
-        numbers = result.map { $0.map { $0 } }
+        
+        numbers = result.map {
+            $0.map {
+                if ($0?.value ?? 0) > score { score = $0?.value ?? 0 }
+                return $0
+            }}
+        
     }
     
     private func mergeIfNeeded(nums: inout [NumberComponent]) {
@@ -185,12 +192,9 @@ class GameViewModel {
                 nums[0].state = .stay
                 nums[0].nextPos = NumberPos(col: 0, row: nums[0].curPos.row)
             }
-            return
-        }
-        
+            return }
         var i = 0
         var pos = 0
-        
         while i < nums.count {
             if i < nums.count - 1 && nums[i].value == nums[i + 1].value {
                 nums[i].state = .merged
@@ -208,6 +212,12 @@ class GameViewModel {
         }
     }
     
+//    private func setNumberComponent(num: NumberComponent, reversed: Bool, transposed: Bool) {
+//        let next_col = reversed ? MAX_COLUMN - 1 - col : col
+//        let curPos = tempRow[col].curPos
+//        let nextPos = transposed ? NumberPos(col: row, row: next_col) : NumberPos(col: next_col, row: row)
+//    }
+    
     private func matrixTranspose<T>(_ matrix: [[T?]]) -> [[T?]] {
         if matrix.isEmpty { return matrix }
         var result = [[T?]] ()
@@ -221,7 +231,7 @@ class GameViewModel {
         for row in 0 ..< numbers.count {
             for col in 0 ..< numbers[row].count {
                 let num = numbers[row][col]
-                print(num?.printForm() ?? "\t \t nil \t \t", terminator: "  ")
+                print(num?.printForm() ?? "\t\t nil \t\t", terminator: "   ")
             }
             print()
         }

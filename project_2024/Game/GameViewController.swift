@@ -30,8 +30,9 @@ class GameViewController: UIViewController {
         
     }
     @IBAction func resetEvent(_ sender: Any) {
-//        viewModel.reSet()
-//        gameView.reSet()
+        viewModel.reset()
+        gameView.reSet()
+        configuration()
     }
     
     @IBOutlet weak var scoreWrapper: UIView! {
@@ -78,7 +79,7 @@ class GameViewController: UIViewController {
     
     @discardableResult
     private func createNewNumber() -> Bool {
-        guard let newNumber = viewModel.createRandomNum() else {
+        guard let newNumber = viewModel.createNew() else {
             return false
         }
         DispatchQueue.main.async {
@@ -96,7 +97,7 @@ class GameViewController: UIViewController {
         let threshold: CGFloat = 100
         
         if abs(verticalVelocity) > abs(horizontalVelocity) && abs(verticalVelocity) > threshold {
-            if viewModel.setMove(direction: verticalVelocity < 0 ? .up : .down) {
+            if viewModel.setMove(dir: verticalVelocity < 0 ? .up : .down) {
                 isAnimating = true
                 
                 self.gameView.moveLabels(data: self.viewModel.numbers, completion: {
@@ -106,7 +107,7 @@ class GameViewController: UIViewController {
                 })
             }
         } else if abs(horizontalVelocity) > abs(verticalVelocity) && abs(horizontalVelocity) > threshold {
-            if viewModel.setMove(direction: horizontalVelocity < 0 ? .left : .right) {
+            if viewModel.setMove(dir: horizontalVelocity < 0 ? .left : .right) {
                 isAnimating = true
                 
                 self.gameView.moveLabels(data: self.viewModel.numbers, completion: {

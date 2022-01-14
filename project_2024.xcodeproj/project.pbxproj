@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0249F2FF277B57CF00295482 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0249F2FE277B57CF00295482 /* SettingViewController.swift */; };
+		0253037E2791D337009563D8 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0253037D2791D337009563D8 /* Configuration.swift */; };
 		02800BDF26B1741D00CB3E5B /* GetRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02800BDE26B1741D00CB3E5B /* GetRequest.swift */; };
 		02800BE126B1742D00CB3E5B /* PutRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02800BE026B1742D00CB3E5B /* PutRequest.swift */; };
 		02800BE326B1743700CB3E5B /* PostRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02800BE226B1743700CB3E5B /* PostRequest.swift */; };
@@ -35,6 +36,7 @@
 
 /* Begin PBXFileReference section */
 		0249F2FE277B57CF00295482 /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
+		0253037D2791D337009563D8 /* Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
 		02800BDE26B1741D00CB3E5B /* GetRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetRequest.swift; sourceTree = "<group>"; };
 		02800BE026B1742D00CB3E5B /* PutRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PutRequest.swift; sourceTree = "<group>"; };
 		02800BE226B1743700CB3E5B /* PostRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostRequest.swift; sourceTree = "<group>"; };
@@ -201,6 +203,7 @@
 				8721AD302650E8120029EFEA /* LaunchScreen.storyboard */,
 				8721AD332650E8120029EFEA /* Info.plist */,
 				3240AF5326551802007C5F06 /* MenuViewController.swift */,
+				0253037D2791D337009563D8 /* Configuration.swift */,
 			);
 			path = project_2024;
 			sourceTree = "<group>";
@@ -319,6 +322,7 @@
 				029EED8526AC03230030ABE5 /* Router.swift in Sources */,
 				02800BDF26B1741D00CB3E5B /* GetRequest.swift in Sources */,
 				029EED9226AC10890030ABE5 /* BaseArrayResponse.swift in Sources */,
+				0253037E2791D337009563D8 /* Configuration.swift in Sources */,
 				3240AF5726551F64007C5F06 /* GameViewController.swift in Sources */,
 				029EED8326AC03120030ABE5 /* NetworkEnviroment.swift in Sources */,
 				8721AD232650E80F0029EFEA /* AppDelegate.swift in Sources */,
